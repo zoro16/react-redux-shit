@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import {
     ADD_TODO,
     TOGGLE_TODO,
@@ -5,37 +6,53 @@ import {
     VisibilityFilter
 } from '../actions';
 
-const initailState = {
-    visibilityFilter: VisibilityFilter.SHOW_ALL,
-    todos: []
-};
+const { SHOW_ALL } = VisibilityFilter;
 
-function todoApp(state = initailState, action) {
+function todos(state = [], action) {
+    switch(action.type){
+        case ADD_TODO:
+            return [
+                ...state,
+                {
+                    text: action.text,
+                    completed: false
+                }
+            ];
+        case TOGGLE_TODO:
+            return state.todos.map((todo, index) => {
+                if (index === action.index) {
+                    return Object.assign({}, todo, {
+                        completed: !todo.completed
+                    });
+                }
+                return todo;
+            });
+        default:
+            return state;
+    }    
+}
+
+function visibilityFilter(state = SHOW_ALL, action) {
     switch(action.type){
         case SET_VISIBILITY_FILTER:
-        return {...state, visibilityFilter: action.fitler};
-        
-        case ADD_TODO:
-        return {...state,
-                todos: [
-                    ...state.todos,
-                    {
-                        text: action.text,
-                        completed: false
-                    }
-                ]
-               };
-
-        case TOGGLE_TODO:
-        return {...state,
-                todos: state.todos.map((todo, index) => {
-                    if (index === action.index) {
-                        return { ...state.todo, completed: !todo.completed};   
-                    }
-                })
-               };
-
+            return action.filter;
         default:
-        return state;
+            return state;
+    }
 }
+
+const todoApp = combineReducers({
+    visibilityFilter,
+    todos
+});
+
+// The Above Is Equal To
+// export default function todoApp(state = {}, action) {
+//   return {
+//     visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+//     todos: todos(state.todos, action)
+//   }
+// }
+
+export default todoApp;
 
