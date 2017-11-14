@@ -29,7 +29,7 @@ const posts = (
                 ...state,
                 isFetching: false,
                 didInvalidate: false,
-                items: action.post,
+                items: action.posts,
                 lastUpdated: action.receivedAt
             };
         default:
@@ -46,7 +46,7 @@ const postsByReddit = (state = {}, action) => {
         case RECEIVE_POSTS:
             return {
                 ...state,
-                [action.subreddit]: posts(state[action.subreddit], action)
+                [action.reddit]: posts(state[action.reddit], action)
                 // EQUIVALENT TO
                 // let nextState = {}
                 // nextState[action.subreddit] = posts(state[action.subreddit], action)
