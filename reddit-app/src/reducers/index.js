@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import selectSubreddit from './selectSubreddit';
-import postsBySubreddit from './postsBySubreddit';
+import selectedReddit from './selectedReddit';
+import postsByReddit from './postsByReddit';
 
 
-const rootReducer = combineReducers(
-    selectSubreddit,
-    postsBySubreddit
-);
+const rootReducer = combineReducers({
+    selectedReddit,
+    postsByReddit
+});
 
 
 export default rootReducer;

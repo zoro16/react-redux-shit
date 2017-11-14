@@ -1,56 +1,62 @@
 import { REQUEST_POSTS,
          RECEIVE_POSTS,
-         INVALIDATE_SUBREDDIT
+         INVALIDATE_REDDIT
        } from '../actions';
 
 
-function posts(
+const posts = (
     state = {
         isFetching: false,
         didInvalidate: false,
         items: []
     },
     action
-) {
+) => {
     switch(action.type) {
-        case INVALIDATE_SUBREDDIT:
-            return Object.assign({}, state, {
+        case INVALIDATE_REDDIT:
+            return {
+                ...state,
                 didInvalidate: true
-            });
+            };
         case REQUEST_POSTS:
-            return Object.assign({}. state, {
+            return {
+                ...state,
                 isFetching: true,
                 didInvalidate: false
-            });
+            };
         case RECEIVE_POSTS:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 isFetching: false,
                 didInvalidate: false,
                 items: action.post,
                 lastUpdated: action.receivedAt
-            });
+            };
         default:
             return state;
     }
-}
+};
 
 
 
-export default function postsBySubreddit(state = {}, action) {
+const postsByReddit = (state = {}, action) => {
     switch(action.type) {
-        case INVALIDATE_SUBREDDIT:
+        case INVALIDATE_REDDIT:
         case REQUEST_POSTS:
         case RECEIVE_POSTS:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 [action.subreddit]: posts(state[action.subreddit], action)
                 // EQUIVALENT TO
                 // let nextState = {}
                 // nextState[action.subreddit] = posts(state[action.subreddit], action)
                 // return Object.assign({}, state, nextState)
 
-            });
+            };
         default:
             return state;
     }
-}
+};
+
+export default postsByReddit;
 
