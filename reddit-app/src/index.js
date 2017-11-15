@@ -9,7 +9,6 @@ import App from './containers/App';
 
 
 const loggerMiddleware = createLogger();
-
 let store = createStore(
     rootReducer,
     applyMiddleware(
